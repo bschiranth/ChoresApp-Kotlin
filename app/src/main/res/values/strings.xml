@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">ChoresApp</string>
-    <string name="enterchore">enterChoreId</string>
-    <string name="assignTo">assignToId</string>
+    <string name="enterchore">Enter a chore</string>
+    <string name="assignTo">Assigned to..</string>
+    <string name="assignedBy">Assigned By...</string>
+    <string name="saveButton">Save</string>
 </resources>
