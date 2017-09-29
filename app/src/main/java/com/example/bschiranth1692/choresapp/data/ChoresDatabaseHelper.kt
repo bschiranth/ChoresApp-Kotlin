@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.example.bschiranth1692.choresapp.data.model.Chore
 import java.text.DateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by bschiranth1692 on 9/28/17.
@@ -43,12 +44,7 @@ class ChoresDatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE
         var db :SQLiteDatabase = writableDatabase
 
         //create content values - hashmap
-        var values: ContentValues = ContentValues()
-
-        values.put(KEY_CHORE_NAME, chore.choreName)
-        values.put(KEY_CHORE_ASSIGNED_BY , chore.assignedBy)
-        values.put(KEY_CHORE_ASSIGNED_TO,chore.assigedTo)
-        values.put(KEY_CHORE_ASSIGNED_TIME, chore.timeAssigned)
+        var values:ContentValues = putContentValues(chore)
 
         //insert into db
         db.insert(TABLE_NAME,null,values)
@@ -60,7 +56,7 @@ class ChoresDatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE
 
     //read chore
     fun readChore(id:Int): Chore{
-        var db :SQLiteDatabase = writableDatabase
+        var db :SQLiteDatabase = readableDatabase
 
         //get cursor
         var cursor:Cursor = db.query(TABLE_NAME, arrayOf(KEY_ID, KEY_CHORE_NAME,
@@ -71,17 +67,100 @@ class ChoresDatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE
             cursor.moveToFirst()
         }
 
-        var chore = Chore()
-        chore.choreName = cursor.getString(cursor.getColumnIndex(KEY_CHORE_NAME))
-        chore.assignedBy= cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_BY))
-        chore.assigedTo= cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TO))
-        chore.timeAssigned= cursor.getLong(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TIME))
+        var chore = createChoreFromCursor(cursor)
 
         var dateFormat: DateFormat = DateFormat.getDateInstance()
         //formatted time
         var formattedDate = dateFormat.format(Date(cursor.getLong(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TIME))).time)
 
         return chore
+    }
+
+    //get all the chores
+    fun readAllChores(): ArrayList<Chore>{
+
+        val allChores: ArrayList<Chore> = ArrayList()
+
+        var db :SQLiteDatabase = readableDatabase
+
+        //get cursor
+        var cursor:Cursor = db.rawQuery("SELECT * FROM $TABLE_NAME",null)
+
+        if(cursor.moveToFirst()){
+            do {
+                var chore = createChoreFromCursor(cursor)
+
+                var dateFormat: DateFormat = DateFormat.getDateInstance()
+                //formatted time
+                var formattedDate = dateFormat.format(Date(cursor.getLong(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TIME))).time)
+
+                allChores.add(chore)
+            }while (cursor.moveToNext())
+        }
+
+
+        return allChores
+    }
+
+    //update table
+    fun updateChore(chore:Chore):Int{
+        var db :SQLiteDatabase = writableDatabase
+
+        var values:ContentValues = putContentValues(chore)
+
+        //update query
+        var n:Int = db.update(TABLE_NAME,values,"$KEY_CHORE_NAME =?", arrayOf(chore.id.toString()))
+
+        db.close() //close db after write
+
+        return n
+    }
+
+    //delete particular chore
+    fun deleteChore(chore:Chore){
+        var db:SQLiteDatabase = writableDatabase
+
+        db.delete(TABLE_NAME,"$KEY_ID=?", arrayOf(chore.id.toString()));
+
+        db.close()
+    }
+
+    //create content values
+    fun putContentValues(chore:Chore):ContentValues{
+
+        var values: ContentValues = ContentValues()
+        values.put(KEY_CHORE_NAME, chore.choreName)
+        values.put(KEY_CHORE_ASSIGNED_BY , chore.assignedBy)
+        values.put(KEY_CHORE_ASSIGNED_TO,chore.assigedTo)
+        values.put(KEY_CHORE_ASSIGNED_TIME, chore.timeAssigned)
+
+        return values
+    }
+
+    //create chore
+    fun createChoreFromCursor(cursor: Cursor):Chore{
+
+        var chore = Chore()
+        chore.choreName = cursor.getString(cursor.getColumnIndex(KEY_CHORE_NAME))
+        chore.assignedBy= cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_BY))
+        chore.assigedTo= cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TO))
+        chore.timeAssigned= cursor.getLong(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TIME))
+
+        return chore
+    }
+
+    //get chore count
+    fun getChoresCount(): Int{
+
+        var db :SQLiteDatabase = readableDatabase
+
+        var countQuery = "SELECT * FROM $TABLE_NAME"
+
+        var cursor: Cursor = db.rawQuery(countQuery,null)
+
+        if(cursor == null) return 0
+
+        return cursor.count
     }
 
 }
