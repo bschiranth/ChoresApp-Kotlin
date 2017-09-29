@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="2dp"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:background="@color/primary_light">
+
+
+            <TextView
+                android:id="@+id/listChoreNameId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Chorename"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:textStyle="bold|italic" />
+
+            <TextView
+                android:id="@+id/listAssignedById"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/listChoreNameId"
+                android:layout_below="@+id/listChoreNameId"
+                android:text="Assigned BY: Micheal dunaca" />
+
+            <TextView
+                android:id="@+id/listAssignedToId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/listChoreNameId"
+                android:layout_below="@+id/listAssignedById"
+                android:text="Assigned to L John duglas" />
+
+            <TextView
+                android:id="@+id/listDateId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/listAssignedToId"
+                android:layout_alignParentEnd="true"
+                android:text="march 21" />
+
+            <Button
+                android:id="@+id/editButtonId"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_above="@+id/listDateId"
+                android:layout_alignStart="@+id/listDateId"
+                android:background="@android:drawable/ic_menu_edit"/>
+
+            <Button
+                android:id="@+id/delButtonId"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_above="@+id/listDateId"
+                android:background="@android:drawable/ic_delete"
+                android:layout_alignParentEnd="true"
+             />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>

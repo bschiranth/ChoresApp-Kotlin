@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.bschiranth1692.choresapp.MainActivity">
+    tools:context="com.example.bschiranth1692.choresapp.ui.MainActivity">
 
     <EditText
         android:id="@+id/assignToId"

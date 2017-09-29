@@ -1,11 +1,13 @@
-package com.example.bschiranth1692.choresapp
+package com.example.bschiranth1692.choresapp.ui
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
 import android.widget.Toast
+import com.example.bschiranth1692.choresapp.R
 import com.example.bschiranth1692.choresapp.data.ChoresDatabaseHelper
 import com.example.bschiranth1692.choresapp.data.model.Chore
 import kotlinx.android.synthetic.main.activity_main.*
@@ -50,7 +52,10 @@ class MainActivity : AppCompatActivity() {
                 handler.postDelayed(Runnable {
                     progressDialog!!.dismiss()
                     Toast.makeText(this,"Saved!",Toast.LENGTH_SHORT).show()
-                },1500)
+                },1000)
+
+                //go to list view
+                startActivity(Intent(this,ChoreListActivity::class.java))
 
             }else {
                 Toast.makeText(this,"Please enter all fields",Toast.LENGTH_LONG).show()
