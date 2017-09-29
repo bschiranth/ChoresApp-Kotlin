@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ChoresApp</string>
+    <string name="enterchore">enterChoreId</string>
+    <string name="assignTo">assignToId</string>
+</resources>
