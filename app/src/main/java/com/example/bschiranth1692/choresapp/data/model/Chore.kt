@@ -1,6 +1,7 @@
 package com.example.bschiranth1692.choresapp.data.model
 
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -22,10 +23,11 @@ class Chore(){
         this.id = id
     }
 
-    fun getFormatedDate(date: Long):String{
+    fun getFormatedDate(dateInLong: Long):String{
 
         //formatted time
-        var dateFormat: DateFormat = DateFormat.getDateInstance()
+        var dateFormat: SimpleDateFormat = SimpleDateFormat("MM/DD/YYYY HH:MM")
+        var date:Date = Date(dateInLong)
         var formattedDate:String = dateFormat.format(date)
         return formattedDate
     }

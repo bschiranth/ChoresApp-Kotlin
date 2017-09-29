@@ -1,7 +1,10 @@
 package com.example.bschiranth1692.choresapp.data
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +12,8 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.bschiranth1692.choresapp.R
 import com.example.bschiranth1692.choresapp.data.model.Chore
+import com.example.bschiranth1692.choresapp.ui.ChoreListActivity
+import kotlinx.android.synthetic.main.popup.view.*
 
 /**
  * Created by bschiranth1692 on 9/29/17.
@@ -46,8 +51,8 @@ class ChoreListAdapter(private val allChores:ArrayList<Chore>,
         fun bindViews(chore:Chore){
 
             choreName.text = chore.choreName
-            assigndBy.text = chore.assignedBy
-            assignTo.text = chore.assigedTo
+            assigndBy.text = "Assigned By: "+chore.assignedBy
+            assignTo.text = "Assigned To: "+chore.assigedTo
             assignDate.text = chore.getFormatedDate(chore.timeAssigned!!)
 
             editButton.setOnClickListener (this)
@@ -58,7 +63,7 @@ class ChoreListAdapter(private val allChores:ArrayList<Chore>,
 
             when(view!!.id){
                 R.id.editButtonId -> {
-
+                    editChore(allChores[adapterPosition])
                 }
 
                 R.id.delButtonId -> {
@@ -76,6 +81,38 @@ class ChoreListAdapter(private val allChores:ArrayList<Chore>,
             var db:ChoresDatabaseHelper = ChoresDatabaseHelper(context)
             db.deleteChore(id)
             db.close()
+        }
+
+        fun editChore(chore: Chore){
+
+            //pop up
+            var dialogBuilder: AlertDialog.Builder? = null
+            var dialog:AlertDialog? = null
+            var dbHelper = ChoresDatabaseHelper(context)
+
+            var view = LayoutInflater.from(context).inflate(R.layout.popup,null)
+
+            dialogBuilder = AlertDialog.Builder(context).setView(view)
+            dialog = dialogBuilder!!.create()
+            dialog!!.show()
+
+            view.saveChoreButtonId2.setOnClickListener {
+                if(!TextUtils.isEmpty(view.enterChoreId2.text.toString()) &&
+                        !TextUtils.isEmpty(view.assignById2.text.toString()) &&
+                        !TextUtils.isEmpty(view.assignToId2.text.toString())){
+
+
+                    chore.choreName = view.enterChoreId2.text.toString()
+                    chore.assigedTo = view.assignToId2.text.toString()
+                    chore.assignedBy = view.assignById2.text.toString()
+
+                    dbHelper!!.updateChore(chore)
+                    notifyItemChanged(adapterPosition,chore)
+
+                    dialog!!.dismiss()
+
+                }
+            }
         }
     }
 }

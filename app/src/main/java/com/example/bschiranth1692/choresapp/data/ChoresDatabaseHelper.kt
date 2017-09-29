@@ -23,7 +23,7 @@ class ChoresDatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE
         var CREATE_CHORE_TABLE =
                 "CREATE TABLE $TABLE_NAME " +
                 "(" +
-                "$KEY_ID INTEGER PRIMARY KEY," +
+                "$KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$KEY_CHORE_NAME TEXT," +
                 "$KEY_CHORE_ASSIGNED_BY TEXT," +
                 "$KEY_CHORE_ASSIGNED_TO TEXT," +
@@ -115,7 +115,8 @@ class ChoresDatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE
     fun deleteChore(id: Int){
         var db:SQLiteDatabase = writableDatabase
 
-        db.delete(TABLE_NAME,"$KEY_ID=?", arrayOf(id.toString()));
+        //db.delete(TABLE_NAME,KEY_ID+"=?", arrayOf(id.toString()));
+        db.execSQL("DELETE FROM "+ TABLE_NAME+" WHERE "+ KEY_ID+" = "+id)
 
         db.close()
     }
