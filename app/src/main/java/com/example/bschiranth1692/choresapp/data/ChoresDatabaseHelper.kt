@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.example.bschiranth1692.choresapp.data.model.Chore
 import java.text.DateFormat
 import java.util.*
@@ -69,10 +70,6 @@ class ChoresDatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE
 
         var chore = createChoreFromCursor(cursor)
 
-        var dateFormat: DateFormat = DateFormat.getDateInstance()
-        //formatted time
-        var formattedDate = dateFormat.format(Date(cursor.getLong(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TIME))).time)
-
         return chore
     }
 
@@ -86,17 +83,15 @@ class ChoresDatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE
         //get cursor
         var cursor:Cursor = db.rawQuery("SELECT * FROM $TABLE_NAME",null)
 
+
+
         if(cursor.moveToFirst()){
             do {
                 var chore = createChoreFromCursor(cursor)
-
-                var dateFormat: DateFormat = DateFormat.getDateInstance()
-                //formatted time
-                var formattedDate = dateFormat.format(Date(cursor.getLong(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TIME))).time)
-
                 allChores.add(chore)
             }while (cursor.moveToNext())
         }
+
 
 
         return allChores
@@ -117,10 +112,10 @@ class ChoresDatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE
     }
 
     //delete particular chore
-    fun deleteChore(chore:Chore){
+    fun deleteChore(id: Int){
         var db:SQLiteDatabase = writableDatabase
 
-        db.delete(TABLE_NAME,"$KEY_ID=?", arrayOf(chore.id.toString()));
+        db.delete(TABLE_NAME,"$KEY_ID=?", arrayOf(id.toString()));
 
         db.close()
     }
@@ -132,7 +127,7 @@ class ChoresDatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE
         values.put(KEY_CHORE_NAME, chore.choreName)
         values.put(KEY_CHORE_ASSIGNED_BY , chore.assignedBy)
         values.put(KEY_CHORE_ASSIGNED_TO,chore.assigedTo)
-        values.put(KEY_CHORE_ASSIGNED_TIME, chore.timeAssigned)
+        values.put(KEY_CHORE_ASSIGNED_TIME, System.currentTimeMillis())
 
         return values
     }
@@ -141,6 +136,7 @@ class ChoresDatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE
     fun createChoreFromCursor(cursor: Cursor):Chore{
 
         var chore = Chore()
+        chore.id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
         chore.choreName = cursor.getString(cursor.getColumnIndex(KEY_CHORE_NAME))
         chore.assignedBy= cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_BY))
         chore.assigedTo= cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TO))

@@ -22,7 +22,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+
         dbHelper = ChoresDatabaseHelper(this)
+
+        //start new activity
+        if(dbHelper!!.getChoresCount() > 0){
+            startActivity(Intent(this,ChoreListActivity::class.java))
+        }
 
         progressDialog = ProgressDialog(this)
 

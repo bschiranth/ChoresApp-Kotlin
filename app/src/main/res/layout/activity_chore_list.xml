@@ -6,14 +6,33 @@
     android:layout_height="match_parent"
     tools:context="com.example.bschiranth1692.choresapp.ui.ChoreListActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="388dp"
-        android:layout_height="511dp"
-        android:layout_margin="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-15dp"
-        tools:layout_editor_absoluteY="-11dp" />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/recyclerViewId"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:src="@android:drawable/ic_input_add" />
+
+
+    </FrameLayout>
+
 </android.support.constraint.ConstraintLayout>

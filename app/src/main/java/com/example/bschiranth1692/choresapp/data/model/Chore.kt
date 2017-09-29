@@ -1,5 +1,8 @@
 package com.example.bschiranth1692.choresapp.data.model
 
+import java.text.DateFormat
+import java.util.*
+
 /**
  * Created by bschiranth1692 on 9/28/17.
  */
@@ -17,5 +20,13 @@ class Chore(){
         this.assigedTo = assigedTo
         this.timeAssigned = timeAssigned
         this.id = id
+    }
+
+    fun getFormatedDate(date: Long):String{
+
+        //formatted time
+        var dateFormat: DateFormat = DateFormat.getDateInstance()
+        var formattedDate:String = dateFormat.format(date)
+        return formattedDate
     }
 }
